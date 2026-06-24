@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💬 پیام‌های پشتیبانی</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Playfair Display', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            background: #0d0d1a;
+            color: #eee;
+            min-height: 100vh;
+            padding: 20px;
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 60%);
+        }
+
+        .vapor-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .vapor {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(ellipse at 20% 30%, rgba(255, 215, 0, 0.03) 0%, transparent 40%);
+            animation: vaporMove 30s ease-in-out infinite;
+            filter: blur(80px);
+        }
+        .vapor:nth-child(2) {
+            background: radial-gradient(ellipse at 30% 60%, rgba(200, 180, 100, 0.02) 0%, transparent 50%);
+            animation: vaporMove2 25s ease-in-out infinite;
+            filter: blur(120px);
+        }
+        .vapor:nth-child(3) {
+            background: radial-gradient(ellipse at 70% 20%, rgba(180, 200, 150, 0.015) 0%, transparent 50%);
+            animation: vaporMove3 35s ease-in-out infinite;
+            filter: blur(100px);
+        }
+        @keyframes vaporMove {
+            0% { transform: translate(0%, 0%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-10%, -5%) scale(1.1); opacity: 0.5; }
+            100% { transform: translate(0%, 0%) scale(1); opacity: 0.3; }
+        }
+        @keyframes vaporMove2 {
+            0% { transform: translate(0%, 0%) scale(1); opacity: 0.2; }
+            50% { transform: translate(15%, -10%) scale(1.15); opacity: 0.4; }
+            100% { transform: translate(0%, 0%) scale(1); opacity: 0.2; }
+        }
+        @keyframes vaporMove3 {
+            0% { transform: translate(0%, 0%) scale(1); opacity: 0.15; }
+            50% { transform: translate(-20%, -20%) scale(1.2); opacity: 0.35; }
+            100% { transform: translate(0%, 0%) scale(1); opacity: 0.15; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(255, 215, 0, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            backdrop-filter: blur(20px);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .header h1 {
+            color: #ffd700;
+            font-size: 1.8rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .header h1 span { font-size: 2.5rem; }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .admin-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 18px;
+            border-radius: 50px;
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        .admin-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #000;
+        }
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover { transform: scale(1.05); }
+        .btn-gold {
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+        }
+        .btn-danger {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 0, 0, 0.1);
+        }
+        .btn-danger:hover { background: rgba(255, 0, 0, 0.2); }
+        .btn-sm { padding: 5px 15px; font-size: 0.8rem; }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 40%, rgba(255, 215, 0, 0.03) 0%, transparent 40%);
+            animation: navVapor 20s ease-in-out infinite;
+            pointer-events: none;
+            filter: blur(60px);
+        }
+        @keyframes navVapor {
+            0% { transform: translate(0%, 0%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-10%, -5%) scale(1.1); opacity: 0.6; }
+            100% { transform: translate(0%, 0%) scale(1); opacity: 0.3; }
+        }
+        .nav a {
+            position: relative;
+            z-index: 1;
+            padding: 10px 22px;
+            border-radius: 50px;
+            background: rgba(255, 215, 0, 0.05);
+            color: rgba(245, 230, 200, 0.6);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border: 1px solid transparent;
+            backdrop-filter: blur(10px);
+        }
+        .nav a:hover {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            transform: translateY(-2px);
+        }
+        .nav a.active {
+            background: rgba(255, 215, 0, 0.12);
+            color: #ffd700;
+            border-color: rgba(255, 215, 0, 0.15);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
+        }
+
+        .content-card {
+            background: rgba(255, 215, 0, 0.02);
+            border-radius: 20px;
+            padding: 25px 30px;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+            backdrop-filter: blur(20px);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 70%, rgba(255, 215, 0, 0.015) 0%, transparent 50%);
+            animation: contentVapor 20s ease-in-out infinite;
+            pointer-events: none;
+            filter: blur(50px);
+        }
+        @keyframes contentVapor {
+            0% { transform: translate(0%, 0%) scale(1); opacity: 0.2; }
+            50% { transform: translate(-10%, 10%) scale(1.1); opacity: 0.4; }
+            100% { transform: translate(0%, 0%) scale(1); opacity: 0.2; }
+        }
+        .content-card h2 {
+            position: relative;
+            z-index: 1;
+            color: #ffd700;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-wrapper {
+            position: relative;
+            z-index: 1;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+        th {
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.05);
+        }
+        tr:hover { background: rgba(255, 215, 0, 0.02); }
+        .badge {
+            padding: 3px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .badge-unread { background: rgba(255, 215, 0, 0.15); color: #ffd700; }
+        .badge-read { background: rgba(255, 255, 255, 0.05); color: #666; }
+        .badge-rich { background: rgba(255, 215, 0, 0.15); color: #ffd700; }
+        .badge-hpro { background: linear-gradient(135deg, #ffd700, #ff6b00); color: #000; }
+
+        .reply-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .reply-form input {
+            flex: 1;
+            padding: 8px 15px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+        .reply-form input:focus {
+            border-color: rgba(255, 215, 0, 0.3);
+            outline: none;
+        }
+        .reply-form button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .reply-form button:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .flash-messages { margin-bottom: 20px; }
+        .flash-messages .alert {
+            padding: 14px 20px;
+            border-radius: 16px;
+            color: #fff;
+            text-align: center;
+            font-size: 0.9rem;
+            backdrop-filter: blur(20px);
+            animation: flashIn 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        @keyframes flashIn {
+            0% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .alert-danger { background: rgba(255, 0, 0, 0.1); border-color: rgba(255, 0, 0, 0.1); }
+        .alert-success { background: rgba(0, 255, 0, 0.05); border-color: rgba(0, 255, 0, 0.05); }
+
+        .empty-row td { text-align: center; padding: 40px; color: rgba(255,255,255,0.2); }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; text-align: center; }
+            .nav { flex-direction: column; align-items: stretch; }
+            .nav a { text-align: center; }
+            .content-card { padding: 15px 18px; }
+            .reply-form { flex-direction: column; }
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 215, 0, 0.15); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="vapor-container">
+        <div class="vapor"></div>
+        <div class="vapor"></div>
+        <div class="vapor"></div>
+    </div>
+
+    <div class="container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <header class="header">
+            <h1><span>💬</span> پیام‌های پشتیبانی</h1>
+            <div class="header-right">
+                <div class="admin-badge">
+                    <div class="admin-avatar">{{ current_user.username[0]|upper }}</div>
+                    <span>{{ current_user.username }}</span>
+                </div>
+                <a href="{{ url_for('admin.admin_logout') }}" class="btn btn-danger">🚪 خروج</a>
+            </div>
+        </header>
+
+        <nav class="nav">
+            <a href="{{ url_for('admin.dashboard') }}">📊 داشبورد</a>
+            <a href="{{ url_for('admin.users') }}">👥 کاربران</a>
+            <a href="{{ url_for('admin.blocked_users') }}">🚫 مسدودها</a>
+            <a href="{{ url_for('admin.requests') }}">📩 درخواست‌ها</a>
+            <a href="{{ url_for('admin.referral_codes') }}">🔑 کدهای معرف</a>
+            <a href="{{ url_for('admin.support_messages') }}" class="active">💬 پیام‌ها</a>
+            <a href="{{ url_for('admin.announcements') }}">📢 اعلان‌ها</a>
+            <a href="{{ url_for('admin.logs') }}">📋 لاگ‌ها</a>
+        </nav>
+
+        <div class="content-card">
+            <h2>💬 پیام‌های کاربران (Rich و HPRO)</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>کاربر</th>
+                            <th>نوع</th>
+                            <th>پیام</th>
+                            <th>وضعیت</th>
+                            <th>تاریخ</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for msg in messages %}
+                        <tr>
+                            <td>{{ msg.id }}</td>
+                            <td><strong>{{ msg.sender.username }}</strong></td>
+                            <td>
+                                <span class="badge badge-{{ msg.sender.account_type }}">
+                                    {{ msg.sender.account_type|upper }}
+                                </span>
+                            </td>
+                            <td style="max-width:200px; word-break:break-word;">{{ msg.message }}</td>
+                            <td>
+                                {% if msg.is_read %}
+                                    <span class="badge badge-read">✅ خوانده شده</span>
+                                {% else %}
+                                    <span class="badge badge-unread">🔴 جدید</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ msg.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('admin.support_reply', msg_id=msg.id) }}" class="reply-form">
+                                    <input type="text" name="reply" placeholder="پاسخ...">
+                                    <button type="submit">📤 ارسال</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr class="empty-row">
+                            <td colspan="7">🕳️ هیچ پیامی وجود ندارد</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

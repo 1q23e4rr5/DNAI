@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑 ورود ادمین</title>
+    <style>
+        /* ============================================
+           ورود ادمین - تم سلطنتی
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Playfair Display', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            background: #0d0d1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            direction: rtl;
+            overflow: hidden;
+        }
+
+        .bg-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 60%);
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 10;
+            background: rgba(13, 13, 26, 0.8);
+            backdrop-filter: blur(40px);
+            border-radius: 30px;
+            padding: 50px 60px;
+            width: 450px;
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9), 0 0 60px rgba(255, 215, 0, 0.02);
+            animation: containerFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .login-container h2 {
+            color: #ffd700;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .login-container .sub {
+            color: rgba(255, 215, 0, 0.3);
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: rgba(255, 215, 0, 0.5);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+            transition: all 0.4s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            border-color: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.03);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            color: #000;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-family: inherit;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.2);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.85rem;
+        }
+
+        .back-link a {
+            color: #ffd700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-link a:hover {
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .flash-messages .alert {
+            padding: 12px 18px;
+            border-radius: 12px;
+            color: #fff;
+            text-align: center;
+            font-size: 0.85rem;
+            animation: flashIn 0.5s ease;
+        }
+
+        @keyframes flashIn {
+            0% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .alert-danger {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.1);
+        }
+
+        .alert-success {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid rgba(0, 255, 0, 0.05);
+        }
+
+        @media (max-width: 500px) {
+            .login-container {
+                width: 90%;
+                padding: 30px 25px;
+                margin: 20px;
+            }
+
+            .login-container h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ============================================
+           انیمیشن ورود
+           ============================================ */
+        .login-container > * {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .login-container > *:nth-child(1) { animation-delay: 0.05s; }
+        .login-container > *:nth-child(2) { animation-delay: 0.1s; }
+        .login-container > *:nth-child(3) { animation-delay: 0.15s; }
+        .login-container > *:nth-child(4) { animation-delay: 0.2s; }
+        .login-container > *:nth-child(5) { animation-delay: 0.25s; }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-particles"></div>
+
+    <div class="login-container">
+        <h2>👑 پنل ادمین</h2>
+        <div class="sub">✦ دسترسی ویژه ✦</div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label>👤 نام کاربری</label>
+                <input type="text" name="username" placeholder="نام کاربری ادمین" required autofocus>
+            </div>
+            <div class="form-group">
+                <label>🔑 رمز عبور</label>
+                <input type="password" name="password" placeholder="رمز عبور ادمین" required>
+            </div>
+            <button type="submit" class="btn-login">🚀 ورود به پنل</button>
+        </form>
+
+        <div class="back-link">
+            <a href="{{ url_for('main.login') }}">← بازگشت به صفحه ورود</a>
+        </div>
+    </div>
+
+</body>
+</html>

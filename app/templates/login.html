@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 ورود - تشخیص عدد</title>
+    <style>
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            direction: rtl;
+        }
+
+        /* ============================================
+           پس‌زمینه سه‌بعدی با ذرات هوشمند
+           ============================================ */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* ============================================
+           افکت هولوگرافیک پس‌زمینه
+           ============================================ */
+        .bg-hologram {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(0, 255, 255, 0.05) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(255, 0, 255, 0.05) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 20%, rgba(0, 255, 100, 0.03) 0%, transparent 50%);
+            animation: hologramPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes hologramPulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* ============================================
+           حلقه‌های نوری چرخان
+           ============================================ */
+        .light-rings {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            animation: ringSpin 20s linear infinite;
+        }
+
+        .ring:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            top: 100px;
+            left: 100px;
+            border-color: rgba(0, 255, 255, 0.15);
+            animation-duration: 25s;
+        }
+
+        .ring:nth-child(2) {
+            width: 700px;
+            height: 700px;
+            top: 50px;
+            left: 50px;
+            border-color: rgba(255, 0, 255, 0.12);
+            animation-duration: 30s;
+            animation-direction: reverse;
+        }
+
+        .ring:nth-child(3) {
+            width: 500px;
+            height: 500px;
+            top: 150px;
+            left: 150px;
+            border-color: rgba(255, 215, 0, 0.10);
+            animation-duration: 18s;
+        }
+
+        .ring:nth-child(4) {
+            width: 400px;
+            height: 400px;
+            top: 200px;
+            left: 200px;
+            border-color: rgba(0, 255, 100, 0.08);
+            animation-duration: 22s;
+            animation-direction: reverse;
+        }
+
+        @keyframes ringSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ============================================
+           کانتینر ورود - افکت شیشه‌ای
+           ============================================ */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            background: rgba(10, 10, 30, 0.6);
+            backdrop-filter: blur(40px) saturate(1.5);
+            -webkit-backdrop-filter: blur(40px) saturate(1.5);
+            border-radius: 40px;
+            padding: 50px 60px;
+            width: 480px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 40px 80px rgba(0, 0, 0, 0.9),
+                inset 0 0 100px rgba(0, 255, 255, 0.03),
+                0 0 60px rgba(0, 255, 255, 0.05);
+            animation: containerFloat 6s ease-in-out infinite;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .login-container:hover {
+            box-shadow: 
+                0 60px 120px rgba(0, 0, 0, 0.9),
+                inset 0 0 150px rgba(0, 255, 255, 0.06),
+                0 0 80px rgba(0, 255, 255, 0.08);
+            transform: translateY(-5px) scale(1.01);
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* ============================================
+           لوگو و عنوان - ساده و خوانا
+           ============================================ */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            font-size: 4rem;
+            display: inline-block;
+            animation: logoPulse 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.3));
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .login-container h2 {
+            color: #ffffff;
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin: 10px 0 5px;
+            letter-spacing: 3px;
+            text-shadow: 
+                0 0 10px rgba(0, 255, 255, 0.3),
+                0 0 20px rgba(0, 255, 255, 0.2),
+                0 0 40px rgba(0, 255, 255, 0.1),
+                0 4px 8px rgba(0, 0, 0, 0.5);
+            /* حذف گرادیان و انیمیشن تغییر رنگ */
+            background: none;
+            -webkit-background-clips: unset;
+            -webkit-text-fill-color: #ffffff;
+            animation: none;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.4);
+            text-align: center;
+            font-size: 0.9rem;
+            letter-spacing: 5px;
+            font-weight: 300;
+            margin-top: 5px;
+        }
+
+        /* ============================================
+           خطوط نوری جداکننده
+           ============================================ */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            gap: 15px;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+        }
+
+        .divider-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* ============================================
+           فرم ورود
+           ============================================ */
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .form-group label {
+            color: rgba(255, 255, 255, 0.5);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            font-weight: 300;
+            transition: all 0.3s ease;
+        }
+
+        .form-group:focus-within label {
+            color: rgba(0, 255, 255, 0.8);
+            transform: translateX(5px);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: inherit;
+            letter-spacing: 1px;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+            font-weight: 300;
+        }
+
+        .form-group input:focus {
+            border-color: rgba(0, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 
+                0 0 40px rgba(0, 255, 255, 0.05),
+                inset 0 0 20px rgba(0, 255, 255, 0.03);
+            transform: scale(1.01);
+        }
+
+        .form-group .input-glow {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            transition: all 0.6s ease;
+            border-radius: 2px;
+        }
+
+        .form-group:focus-within .input-glow {
+            width: 80%;
+        }
+
+        /* ============================================
+           دکمه ورود
+           ============================================ */
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff, #00c6ff);
+            background-size: 200% 200%;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 0 40px rgba(0, 114, 255, 0.2);
+            letter-spacing: 2px;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+            animation: btnGradient 4s ease-in-out infinite;
+        }
+
+        @keyframes btnGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            animation: btnShine 6s ease-in-out infinite;
+            transform: translateX(-100%);
+        }
+
+        @keyframes btnShine {
+            0%, 100% { transform: translateX(-100%) rotate(0deg); }
+            50% { transform: translateX(100%) rotate(10deg); }
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 60px rgba(0, 114, 255, 0.4), 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        .btn-login .btn-text {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* ============================================
+           لینک ثبت‌نام
+           ============================================ */
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .register-link a {
+            color: #00ffff;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .register-link a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            transition: width 0.4s ease;
+        }
+
+        .register-link a:hover::after {
+            width: 100%;
+        }
+
+        .register-link a:hover {
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+        }
+
+        /* ============================================
+           پیام‌های فلش
+           ============================================ */
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .flash-messages .alert {
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: #fff;
+            text-align: center;
+            font-size: 0.85rem;
+            animation: flashIn 0.5s ease;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes flashIn {
+            0% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .alert-danger {
+            background: rgba(255, 0, 0, 0.15);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .alert-success {
+            background: rgba(0, 255, 0, 0.10);
+            border: 1px solid rgba(0, 255, 0, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .alert-info {
+            background: rgba(0, 255, 255, 0.10);
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .alert-warning {
+            background: rgba(255, 255, 0, 0.10);
+            border: 1px solid rgba(255, 255, 0, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        /* ============================================
+           افکت‌های ویژه
+           ============================================ */
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            animation: scanLine 8s linear infinite;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes scanLine {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* ============================================
+           پاسخگو
+           ============================================ */
+        @media (max-width: 600px) {
+            .login-container {
+                width: 90%;
+                padding: 30px 25px;
+                margin: 20px;
+            }
+
+            .login-container h2 {
+                font-size: 1.6rem;
+            }
+
+            .light-rings {
+                display: none;
+            }
+        }
+
+        /* ============================================
+           انیمیشن ورود المان‌ها
+           ============================================ */
+        .login-container > * {
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .login-container > *:nth-child(1) { animation-delay: 0.1s; }
+        .login-container > *:nth-child(2) { animation-delay: 0.2s; }
+        .login-container > *:nth-child(3) { animation-delay: 0.3s; }
+        .login-container > *:nth-child(4) { animation-delay: 0.4s; }
+        .login-container > *:nth-child(5) { animation-delay: 0.5s; }
+        .login-container > *:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================
+           کورسور سفارشی
+           ============================================ */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 999;
+            transform: translate(-50%, -50%);
+            transition: left 0.1s ease, top 0.1s ease;
+        }
+
+        /* ============================================
+           ذرات پس‌زمینه اضافی با CSS
+           ============================================ */
+        .particle-extra {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: particleFloat 15s ease-in-out infinite;
+        }
+
+        .particle-extra:nth-child(1) {
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 255, 255, 0.3);
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .particle-extra:nth-child(2) {
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 0, 255, 0.2);
+            top: 80%;
+            left: 90%;
+            animation-delay: -3s;
+        }
+
+        .particle-extra:nth-child(3) {
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 215, 0, 0.3);
+            top: 20%;
+            left: 85%;
+            animation-delay: -6s;
+        }
+
+        .particle-extra:nth-child(4) {
+            width: 5px;
+            height: 5px;
+            background: rgba(0, 255, 100, 0.2);
+            top: 70%;
+            left: 10%;
+            animation-delay: -9s;
+        }
+
+        .particle-extra:nth-child(5) {
+            width: 7px;
+            height: 7px;
+            background: rgba(255, 100, 0, 0.15);
+            top: 50%;
+            left: 50%;
+            animation-delay: -12s;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            25% { transform: translate(50px, -30px) scale(1.2); opacity: 0.6; }
+            50% { transform: translate(-20px, -60px) scale(0.8); opacity: 0.4; }
+            75% { transform: translate(30px, -10px) scale(1.1); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+         افکت هولوگرافیک
+         ============================================ -->
+    <div class="bg-hologram"></div>
+
+    <!-- ============================================
+         حلقه‌های نوری
+         ============================================ -->
+    <div class="light-rings">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+    </div>
+
+    <!-- ============================================
+         ذرات CSS اضافی
+         ============================================ -->
+    <div class="particle-extra"></div>
+    <div class="particle-extra"></div>
+    <div class="particle-extra"></div>
+    <div class="particle-extra"></div>
+    <div class="particle-extra"></div>
+
+    <!-- ============================================
+         خط اسکن
+         ============================================ -->
+    <div class="scan-line"></div>
+
+    <!-- ============================================
+         کورسور گلو
+         ============================================ -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- ============================================
+         ذرات JS
+         ============================================ -->
+    <div id="particles-js"></div>
+
+    <!-- ============================================
+         کانتینر ورود
+         ============================================ -->
+    <div class="login-container">
+        <div class="logo-container">
+            <div class="logo-icon">🚀</div>
+            <h2>تشخیص عدد</h2>
+            <div class="subtitle">✦ تشخیص عدد ✦</div>
+        </div>
+
+        <div class="divider">
+            <span class="divider-line"></span>
+            <span class="divider-dot"></span>
+            <span class="divider-line"></span>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label>👤 نام کاربری</label>
+                <input type="text" name="username" placeholder="نام کاربری خود را وارد کنید" required autofocus>
+                <div class="input-glow"></div>
+            </div>
+
+            <div class="form-group">
+                <label>🔑 رمز عبور</label>
+                <input type="password" name="password" placeholder="رمز عبور خود را وارد کنید" required>
+                <div class="input-glow"></div>
+            </div>
+
+            <button type="submit" class="btn-login">
+                <span class="btn-text">
+                    <span>🚀</span>
+                    <span>ورود</span>
+                </span>
+            </button>
+        </form>
+
+        <div class="register-link">
+            ✨ هنوز حساب ندارید؟ <a href="{{ url_for('main.register_request') }}">همین حالا ثبت‌نام کنید</a>
+        </div>
+    </div>
+
+    <!-- ============================================
+        اسکریپت‌ها
+        ============================================ -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js">
+    </script>
+    <script>
+        // ============================================
+        // ذرات هوشمند با particles.js
+        // ============================================
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 200,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#00ffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 2,
+                        "size_min": 0.5,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#00ffff",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": true,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "repulse": {
+                        "distance": 100,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // ============================================
+        // کورسور گلو
+        // ============================================
+        const cursorGlow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // ============================================
+        // انیمیشن ورود با تاخیر تصادفی
+        // ============================================
+        document.querySelectorAll('.login-container > *').forEach((el, i) => {
+            const delay = 0.1 + (i * 0.08);
+            el.style.animationDelay = delay + 's';
+        });
+
+        // ============================================
+        // افکت تایپ برای عنوان (اختیاری)
+        // ============================================
+        console.log('🚀 تشخیص عدد - وارد آینده شوید!');
+    </script>
+</body>
+</html>

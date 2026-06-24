@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑 پنل کاربری</title>
+    <style>
+        /* ============================================
+           RESET & BASE - تم اشرافی HPRO
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Orbitron:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Playfair Display', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            min-height: 100vh;
+            background: #0a0a12;
+            color: #f5e6c8;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           پس‌زمینه ویدیویی اشرافی (فقط HPRO)
+           ============================================ */
+        .bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .bg-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            filter: blur(3px) saturate(0.5);
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 60%),
+                rgba(10, 10, 18, 0.85);
+            pointer-events: none;
+        }
+
+        /* ============================================
+           ذرات طلایی هوشمند
+           ============================================ */
+        #gold-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ============================================
+           کانتینر اصلی
+           ============================================ */
+        .app-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* ============================================
+           هدر اشرافی
+           ============================================ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(255, 215, 0, 0.03);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            backdrop-filter: blur(20px);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+            animation: headerGlow 6s ease-in-out infinite;
+        }
+        @keyframes headerGlow {
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.02); }
+            50% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.06); }
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header-logo {
+            font-size: 2.5rem;
+            animation: logoRotate 20s linear infinite;
+        }
+        @keyframes logoRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 
+                0 0 10px rgba(255, 215, 0, 0.3),
+                0 0 20px rgba(255, 215, 0, 0.2),
+                0 0 40px rgba(255, 215, 0, 0.1),
+                0 4px 8px rgba(0, 0, 0, 0.5);
+            /* حذف گرادیان و تغییر رنگ */
+            background: none;
+            -webkit-background-clips: unset;
+            -webkit-text-fill-color: #ffffff;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 20px 8px 25px;
+            border-radius: 50px;
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        .user-badge:hover {
+            background: rgba(255, 215, 0, 0.12);
+            transform: scale(1.02);
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+        .user-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f5e6c8;
+        }
+        .user-type {
+            padding: 3px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .user-type.hpro {
+            background: linear-gradient(135deg, #ffd700, #ff6b00);
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            animation: typePulse 2s ease-in-out infinite;
+        }
+        @keyframes typePulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.5); }
+        }
+        .user-type.rich {
+            background: linear-gradient(135deg, #f5d76e, #d4af37);
+            color: #000;
+            box-shadow: 0 0 20px rgba(245, 215, 110, 0.2);
+        }
+        .user-type.noob {
+            background: #333;
+            color: #888;
+            box-shadow: none;
+            border: 1px dashed #555;
+        }
+        .btn-logout {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6b6b;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            border: 1px solid rgba(255, 0, 0, 0.1);
+        }
+        .btn-logout:hover {
+            background: rgba(255, 0, 0, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
+        }
+
+        /* ============================================
+           محتوای اصلی (بدون سایدبار)
+           ============================================ */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* ============================================
+           کارت‌ها - افکت شیشه‌ای طلایی
+           ============================================ */
+        .card {
+            background: rgba(255, 215, 0, 0.02);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            padding: 25px 30px;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+        .card:hover {
+            border-color: rgba(255, 215, 0, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 80px rgba(255, 215, 0, 0.02);
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ============================================
+           Canvas تشخیص عدد
+           ============================================ */
+        .canvas-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        canvas {
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 215, 0, 0.1);
+            cursor: crosshair;
+            transition: all 0.4s ease;
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            aspect-ratio: 1/1;
+        }
+        canvas:hover {
+            border-color: rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.05);
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        .controls label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(245, 230, 200, 0.6);
+            font-size: 0.85rem;
+        }
+        .controls input[type="range"] {
+            width: 80px;
+            accent-color: #ffd700;
+        }
+        .controls input[type="color"] {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 50%;
+            padding: 2px;
+            cursor: pointer;
+            background: transparent;
+        }
+        .controls input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        .controls input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+        .btn-gold:hover {
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
+            transform: scale(1.05) translateY(-2px);
+        }
+        .btn-outline-gold {
+            background: transparent;
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .btn-outline-gold:hover {
+            background: rgba(255, 215, 0, 0.05);
+            border-color: #ffd700;
+        }
+
+        /* ============================================
+           نتیجه تشخیص
+           ============================================ */
+        .result-box {
+            background: rgba(255, 215, 0, 0.03);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+            transition: all 0.5s ease;
+        }
+        .result-box.has-result {
+            border-color: rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.05);
+        }
+        .detected-number {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 60px rgba(255, 215, 0, 0.2);
+            animation: numberPop 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        @keyframes numberPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .confidence-text {
+            font-size: 0.9rem;
+            color: rgba(245, 230, 200, 0.6);
+            margin-top: 5px;
+        }
+        .confidence-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .confidence-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #ff6b6b, #ffd700, #00ff88);
+            transition: width 1s cubic-bezier(0.23, 1, 0.32, 1);
+            width: 0%;
+        }
+
+        /* ============================================
+           چت پشتیبانی و هوش مصنوعی
+           ============================================ */
+        .chat-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .chat-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .chat-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 15px;
+            min-height: 150px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+        }
+        .chat-box::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-box::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+        }
+        .chat-message {
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            animation: msgIn 0.3s ease;
+        }
+        @keyframes msgIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .chat-message.user {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.05);
+            text-align: right;
+            color: #f5e6c8;
+        }
+        .chat-message.bot {
+            background: rgba(255, 215, 0, 0.02);
+            border: 1px solid rgba(255, 215, 0, 0.03);
+            text-align: left;
+            color: #ffd700;
+        }
+        .chat-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .chat-input-group input {
+            flex: 1;
+            padding: 12px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            color: #f5e6c8;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .chat-input-group input:focus {
+            border-color: rgba(255, 215, 0, 0.3);
+            outline: none;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.03);
+        }
+        .chat-input-group input::placeholder {
+            color: rgba(245, 230, 200, 0.2);
+        }
+        .chat-input-group button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .chat-input-group button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+
+        /* ============================================
+           تایمر Noob
+           ============================================ */
+        .timer-warning {
+            background: rgba(255, 0, 0, 0.05);
+            border: 1px solid rgba(255, 0, 0, 0.1);
+            border-radius: 16px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+            animation: timerPulse 2s ease-in-out infinite;
+        }
+        @keyframes timerPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .timer-number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #ff6b6b;
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* ============================================
+           فلش پیام‌ها
+           ============================================ */
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        .flash-messages .alert {
+            padding: 14px 20px;
+            border-radius: 16px;
+            color: #fff;
+            text-align: center;
+            font-size: 0.9rem;
+            backdrop-filter: blur(20px);
+            animation: flashIn 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        @keyframes flashIn {
+            0% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .alert-danger {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: rgba(255, 0, 0, 0.1);
+        }
+        .alert-success {
+            background: rgba(0, 255, 0, 0.05);
+            border-color: rgba(0, 255, 0, 0.05);
+        }
+        .alert-info {
+            background: rgba(0, 255, 255, 0.05);
+            border-color: rgba(0, 255, 255, 0.05);
+        }
+
+        /* ============================================
+           اسکرول‌بار سفارشی
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.15);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.25);
+        }
+
+        /* ============================================
+           انیمیشن‌های ورود
+           ============================================ */
+        .fade-in {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in:nth-child(4) { animation-delay: 0.4s; }
+        .fade-in:nth-child(5) { animation-delay: 0.5s; }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================
+           حالت Noob - داغون
+           ============================================ */
+        body.noob-theme {
+            background: #1a1a1a;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        body.noob-theme .card {
+            background: #2a2a2a;
+            border: 2px dashed #ff0000;
+            border-radius: 0;
+            padding: 15px;
+            backdrop-filter: none;
+        }
+        body.noob-theme .card::before { display: none; }
+        body.noob-theme .card-title { color: #ff4444; font-size: 1rem; }
+        body.noob-theme .btn { background: #ff4444; color: #fff; border-radius: 0; border: 1px solid #000; font-size: 0.8rem; }
+        body.noob-theme .btn:hover { transform: none; background: #ff6666; }
+        body.noob-theme .header { background: #222; border: 2px dashed #ff0000; border-radius: 0; backdrop-filter: none; }
+        body.noob-theme .header-title { color: #ff4444; text-shadow: none; background: none; -webkit-text-fill-color: #ff4444; }
+        body.noob-theme .user-badge { background: #222; border: 1px dashed #ff0000; border-radius: 0; }
+        body.noob-theme .user-type.hpro, body.noob-theme .user-type.rich {
+            background: #ff4444; color: #fff; border-radius: 0; box-shadow: none; animation: none;
+        }
+        body.noob-theme .btn-gold { background: #ff4444; color: #fff; box-shadow: none; }
+        body.noob-theme .btn-outline-gold { border-color: #ff4444; color: #ff4444; }
+        body.noob-theme .chat-input-group button { background: #ff4444; color: #fff; border-radius: 0; }
+        body.noob-theme .controls input[type="range"] { accent-color: #ff4444; }
+        body.noob-theme .controls input[type="color"] { border-color: #ff4444; }
+        body.noob-theme canvas { border-color: #ff4444; border-radius: 0; }
+        body.noob-theme .result-box { border-color: #ff4444; border-radius: 0; }
+        body.noob-theme .detected-number { color: #ff4444; text-shadow: none; }
+        body.noob-theme .confidence-fill { background: linear-gradient(90deg, #ff4444, #ff6666); }
+
+        /* ============================================
+           پاسخگو
+           ============================================ */
+        @media (max-width: 768px) {
+            .header { flex-direction: column; text-align: center; padding: 15px 20px; }
+            .header-left { flex-direction: column; }
+            .header-right { flex-direction: column; width: 100%; }
+            .user-badge { width: 100%; justify-content: center; }
+            .card { padding: 15px 18px; }
+            .chat-container { grid-template-columns: 1fr; }
+            .controls { flex-direction: column; align-items: center; }
+            canvas { max-width: 100%; }
+        }
+
+        /* ============================================
+           وضعیت آنلاین
+           ============================================ */
+        .online-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: dotOnline 2s ease-in-out infinite;
+        }
+        .online-dot.online {
+            background: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+        .online-dot.offline {
+            background: #666;
+        }
+        @keyframes dotOnline {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body class="{{ user.account_type }}-theme" 
+      data-is-rich="{{ user.is_rich()|tojson }}" 
+      data-is-hpro="{{ user.is_hpro()|tojson }}" 
+      data-is-noob="{{ user.is_noob()|tojson }}" 
+      data-remaining-time="{{ remaining_time }}">
+
+    <!-- ============================================
+        پس‌زمینه ویدیویی اشرافی (فقط HPRO)
+        ============================================ -->
+    {% if user.is_hpro() %}
+    <div class="bg-video">
+        <video autoplay muted loop playsinline>
+            <source src="https://assets.codepen.io/13471/space.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="bg-overlay"></div>
+    {% endif %}
+
+    <!-- ============================================
+        ذرات طلایی (Rich و HPRO)
+        ============================================ -->
+    {% if user.is_rich() or user.is_hpro() %}
+    <div id="gold-particles"></div>
+    {% endif %}
+
+    <!-- ============================================
+        کانتینر اصلی
+        ============================================ -->
+    <div class="app-container">
+
+        <!-- ============================================
+            فلش پیام‌ها
+            ============================================ -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- ============================================
+            هدر
+            ============================================ -->
+        <header class="header fade-in">
+            <div class="header-left">
+                <span class="header-logo">👑</span>
+                <span class="header-title">تشخیص عدد</span>
+            </div>
+            <div class="header-right">
+                <div class="user-badge">
+                    <div class="user-avatar">{{ user.username[0]|upper }}</div>
+                    <span class="user-name">{{ user.username }}</span>
+                    <span class="user-type {{ user.account_type }}">{{ user.account_type|upper }}</span>
+                    <span class="online-dot online"></span>
+                </div>
+                <a href="{{ url_for('main.logout') }}" class="btn-logout">🚪 خروج</a>
+            </div>
+        </header>
+
+        <!-- ============================================
+            محتوای اصلی (بدون سایدبار)
+            ============================================ -->
+        <div class="main-content">
+
+            <!-- ============================================
+                کارت تشخیص عدد
+                ============================================ -->
+            <div class="card fade-in">
+                <div class="card-title">🎯 تشخیص عدد</div>
+
+                <div class="canvas-wrapper">
+                    <canvas id="drawCanvas" width="400" height="400"></canvas>
+
+                    <div class="controls">
+                        <label>
+                            ✏️ ضخامت
+                            <input type="range" id="lineWidth" min="1" max="30" value="8">
+                        </label>
+                        <label>
+                            🎨 رنگ
+                            <input type="color" id="strokeColor" value="#ffd700">
+                        </label>
+                        <button class="btn btn-outline-gold" onclick="clearCanvas()">🗑️ پاک</button>
+                        <button class="btn btn-gold" id="detectBtn">🤖 تشخیص</button>
+                    </div>
+
+                    <div class="result-box" id="resultBox">
+                        <div>عدد تشخیص داده شده: <span class="detected-number" id="detectedNumber">?</span></div>
+                        <div class="confidence-text">دقت: <span id="confidenceText">0%</span></div>
+                        <div class="confidence-bar"><div class="confidence-fill" id="confidenceFill" style="width:0%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================
+                کارت آپلود (فقط Rich و HPRO)
+                ============================================ -->
+            {% if user.is_rich() or user.is_hpro() %}
+            <div class="card fade-in">
+                <div class="card-title">📤 آپلود عکس</div>
+                <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:center;">
+                    <input type="file" id="uploadInput" accept="image/*" style="padding:10px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,215,0,0.1); border-radius:12px; color:#f5e6c8; flex:1; min-width:200px;">
+                    <button class="btn btn-gold" id="uploadBtn">🔍 تشخیص از عکس</button>
+                </div>
+                <div id="uploadPreview" style="margin-top:15px;"></div>
+            </div>
+            {% endif %}
+
+            <!-- ============================================
+                کارت چت پشتیبانی
+                ============================================ -->
+            <div class="card fade-in">
+                <div class="card-title">💬 پشتیبانی</div>
+                <div class="chat-box" id="chatBox"></div>
+                <div class="chat-input-group">
+                    <input type="text" id="chatInput" placeholder="پیام خود را بنویسید...">
+                    <button id="chatSendBtn">📤 ارسال</button>
+                </div>
+            </div>
+
+            <!-- ============================================
+                کارت چت هوش مصنوعی (فقط Rich و HPRO)
+                ============================================ -->
+            {% if user.is_rich() or user.is_hpro() %}
+            <div class="card fade-in">
+                <div class="card-title">🤖 چت با هوش مصنوعی</div>
+                <div class="chat-box" id="aiChatBox"></div>
+                <div class="chat-input-group">
+                    <input type="text" id="aiChatInput" placeholder="سوال خود را بپرسید...">
+                    <button id="aiChatSendBtn">🤖 ارسال</button>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- ============================================
+        اسکریپت‌ها
+        ============================================ -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js">
+    </script>
+    <script>
+        // ============================================
+        // دریافت داده‌ها از attributes
+        // ============================================
+        var body = document.body;
+        var isRich = body.getAttribute('data-is-rich') === 'true';
+        var isHpro = body.getAttribute('data-is-hpro') === 'true';
+        var isNoob = body.getAttribute('data-is-noob') === 'true';
+        var remainingTime = parseInt(body.getAttribute('data-remaining-time')) || 0;
+
+        // ============================================
+        // ذرات طلایی (Rich و HPRO)
+        // ============================================
+        if (isRich || isHpro) {
+            particlesJS("gold-particles", {
+                "particles": {
+                    "number": { "value": isHpro ? 300 : 150, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#ffd700" },
+                    "shape": { "type": "circle" },
+                    "opacity": {
+                        "value": 0.6,
+                        "random": true,
+                        "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false }
+                    },
+                    "size": {
+                        "value": isHpro ? 4 : 3,
+                        "random": true,
+                        "anim": { "enable": true, "speed": 2, "size_min": 0.5, "sync": false }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffd700",
+                        "opacity": 0.1,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": isHpro ? 3 : 2,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": { "enable": true, "rotateX": 600, "rotateY": 1200 }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": { "enable": true, "mode": "repulse" },
+                        "onclick": { "enable": true, "mode": "push" },
+                        "resize": true
+                    },
+                    "modes": {
+                        "repulse": { "distance": 100, "duration": 0.4 },
+                        "push": { "particles_nb": 4 }
+                    }
+                },
+                "retina_detect": true
+            });
+        }
+
+        // ============================================
+        // Canvas
+        // ============================================
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            return {
+                x: (e.clientX - rect.left) * scaleX,
+                y: (e.clientY - rect.top) * scaleY
+            };
+        }
+
+        function startDraw(e) {
+            drawing = true;
+            const pos = getMousePos(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        function draw(e) {
+            if (!drawing) return;
+            const pos = getMousePos(e);
+            ctx.lineWidth = document.getElementById('lineWidth').value;
+            ctx.strokeStyle = document.getElementById('strokeColor').value;
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        }
+
+        function stopDraw() {
+            drawing = false;
+        }
+
+        canvas.addEventListener('mousedown', startDraw);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDraw);
+        canvas.addEventListener('mouseleave', stopDraw);
+
+        // ============================================
+        // پاک کردن Canvas
+        // ============================================
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('detectedNumber').innerText = '?';
+            document.getElementById('confidenceText').innerText = '0%';
+            document.getElementById('confidenceFill').style.width = '0%';
+            document.getElementById('resultBox').classList.remove('has-result');
+        }
+
+        // ============================================
+        // تشخیص از Canvas
+        // ============================================
+        document.getElementById('detectBtn').addEventListener('click', function() {
+            const imageData = canvas.toDataURL('image/png');
+            fetch('/detect-canvas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: imageData })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    document.getElementById('detectedNumber').innerText = data.number;
+                    document.getElementById('confidenceText').innerText = data.confidence.toFixed(1) + '%';
+                    document.getElementById('confidenceFill').style.width = data.confidence + '%';
+                    document.getElementById('resultBox').classList.add('has-result');
+                })
+                .catch(err => alert('خطا: ' + err));
+        });
+
+        // ============================================
+        // آپلود (Rich و HPRO)
+        // ============================================
+        if (isRich || isHpro) {
+            document.getElementById('uploadBtn').addEventListener('click', function() {
+                const fileInput = document.getElementById('uploadInput');
+                const file = fileInput.files[0];
+                if (!file) {
+                    alert('لطفاً یک فایل انتخاب کنید.');
+                    return;
+                }
+                const formData = new FormData();
+                formData.append('file', file);
+                fetch('/detect-upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                            return;
+                        }
+                        document.getElementById('detectedNumber').innerText = data.number;
+                        document.getElementById('confidenceText').innerText = data.confidence.toFixed(1) +
+                        '%';
+                        document.getElementById('confidenceFill').style.width = data.confidence + '%';
+                        document.getElementById('resultBox').classList.add('has-result');
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.getElementById('uploadPreview').innerHTML =
+                                `<img src="${e.target.result}" style="max-width:250px; border-radius:16px; margin-top:10px; border:1px solid rgba(255,215,0,0.1);">`;
+                        };
+                        reader.readAsDataURL(file);
+                    })
+                    .catch(err => alert('خطا: ' + err));
+            });
+        }
+
+        // ============================================
+        // چت پشتیبانی
+        // ============================================
+        const socket = io();
+
+        fetch('/support-get-replies')
+            .then(res => res.json())
+            .then(data => {
+                const box = document.getElementById('chatBox');
+                data.replies.forEach(msg => {
+                    const div = document.createElement('div');
+                    div.className = 'chat-message ' + (msg.is_from_user ? 'user' : 'bot');
+                    div.textContent = (msg.is_from_user ? '👤 شما: ' : '🤖 پشتیبانی: ') + msg.message;
+                    box.appendChild(div);
+                });
+                box.scrollTop = box.scrollHeight;
+            });
+
+        document.getElementById('chatSendBtn').addEventListener('click', function() {
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+            const box = document.getElementById('chatBox');
+            const div = document.createElement('div');
+            div.className = 'chat-message user';
+            div.textContent = '👤 شما: ' + msg;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+            input.value = '';
+
+            fetch('/support-send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: msg })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.reply) {
+                        const replyDiv = document.createElement('div');
+                        replyDiv.className = 'chat-message bot';
+                        replyDiv.textContent = '🤖 پشتیبانی: ' + data.reply;
+                        box.appendChild(replyDiv);
+                        box.scrollTop = box.scrollHeight;
+                    }
+                });
+        });
+
+        socket.on('new_support_reply', function(data) {
+            const box = document.getElementById('chatBox');
+            const div = document.createElement('div');
+            div.className = 'chat-message bot';
+            div.textContent = '🤖 پشتیبانی: ' + data.message;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        });
+
+        // ============================================
+        // چت هوش مصنوعی (Rich و HPRO)
+        // ============================================
+        if (isRich || isHpro) {
+            document.getElementById('aiChatSendBtn').addEventListener('click', function() {
+                const input = document.getElementById('aiChatInput');
+                const msg = input.value.trim();
+                if (!msg) return;
+                const box = document.getElementById('aiChatBox');
+                const div = document.createElement('div');
+                div.className = 'chat-message user';
+                div.textContent = '👤 شما: ' + msg;
+                box.appendChild(div);
+                box.scrollTop = box.scrollHeight;
+                input.value = '';
+
+                fetch('/ai-chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: msg })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        const replyDiv = document.createElement('div');
+                        replyDiv.className = 'chat-message bot';
+                        replyDiv.textContent = '🤖 AI: ' + (data.reply || data.error);
+                        box.appendChild(replyDiv);
+                        box.scrollTop = box.scrollHeight;
+                    });
+            });
+        }
+
+        // ============================================
+        // تایمر Noob
+        // ============================================
+        if (isNoob) {
+            let remaining = remainingTime;
+            const timerDisplay = document.getElementById('timerDisplay');
+            if (timerDisplay) {
+                setInterval(function() {
+                    if (remaining > 0) {
+                        remaining--;
+                        timerDisplay.innerText = remaining;
+                    } else {
+                        location.reload();
+                    }
+                }, 1000);
+            }
+        }
+
+        // ============================================
+        // اعلان خروج اجباری
+        // ============================================
+        socket.on('force_logout', function(data) {
+            alert(data.message);
+            window.location.href = '/logout';
+        });
+
+        socket.on('new_announcement', function(data) {
+            alert('📢 ' + data.title + '\n' + data.message);
+        });
+
+        // ============================================
+        // افکت نور روی کارت‌ها با حرکت ماوس
+        // ============================================
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', x + '%');
+                card.style.setProperty('--mouse-y', y + '%');
+            });
+        });
+
+        console.log('👑 پنل کاربری با تم ' + (isHpro ? 'اشرافی HPRO' : isRich ? 'مافیایی Rich' : 'داغون Noob') +
+            ' بارگذاری شد!');
+    </script>
+</body>
+</html>

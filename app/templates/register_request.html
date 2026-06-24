@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 درخواست اکانت</title>
+    <style>
+        /* ============================================
+           درخواست اکانت - تم آینده‌نگرانه
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(ellipse at center, #0b0b2b 0%, #000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        .bg-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 30px;
+            padding: 40px 50px;
+            width: 480px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            animation: containerFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .container h2 {
+            color: #ffffff;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+            text-shadow: 
+                0 0 10px rgba(0, 255, 255, 0.3),
+                0 0 20px rgba(0, 255, 255, 0.2),
+                0 0 40px rgba(0, 255, 255, 0.1),
+                0 4px 8px rgba(0, 0, 0, 0.5);
+            /* حذف گرادیان و تغییر رنگ */
+            background: none;
+            -webkit-background-clips: unset;
+            -webkit-text-fill-color: #ffffff;
+        }
+
+        .container .sub {
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            color: rgba(255, 255, 255, 0.5);
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.4s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: rgba(0, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.03);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group select option {
+            color: #000;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-family: inherit;
+            box-shadow: 0 0 40px rgba(0, 114, 255, 0.15);
+            letter-spacing: 1px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 60px rgba(0, 114, 255, 0.25);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.85rem;
+        }
+
+        .login-link a {
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a:hover {
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .flash-messages {
+            margin-bottom: 18px;
+        }
+
+        .flash-messages .alert {
+            padding: 10px 16px;
+            border-radius: 10px;
+            color: #fff;
+            text-align: center;
+            font-size: 0.8rem;
+            animation: flashIn 0.5s ease;
+        }
+
+        @keyframes flashIn {
+            0% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .alert-danger {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.1);
+        }
+
+        .alert-success {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid rgba(0, 255, 0, 0.05);
+        }
+
+        .alert-info {
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.05);
+        }
+
+        .alert-warning {
+            background: rgba(255, 255, 0, 0.05);
+            border: 1px solid rgba(255, 255, 0, 0.05);
+        }
+
+        .info-box {
+            background: rgba(0, 255, 255, 0.03);
+            border: 1px solid rgba(0, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .info-box strong {
+            color: #00ffff;
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                width: 95%;
+                padding: 25px 20px;
+            }
+
+            .container h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* ============================================
+           انیمیشن ورود
+           ============================================ */
+        .container > * {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .container > *:nth-child(1) { animation-delay: 0.05s; }
+        .container > *:nth-child(2) { animation-delay: 0.1s; }
+        .container > *:nth-child(3) { animation-delay: 0.15s; }
+        .container > *:nth-child(4) { animation-delay: 0.2s; }
+        .container > *:nth-child(5) { animation-delay: 0.25s; }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-particles" id="particles-js"></div>
+
+    <div class="container">
+        <h2>📝 درخواست اکانت</h2>
+        <div class="sub">✦ به جمع ما بپیوندید ✦</div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="info-box">
+            💡 با وارد کردن <strong>کد معرف طلایی</strong>، اکانت <strong>HPRO</strong> به صورت خودکار ساخته می‌شود!
+        </div>
+
+        <form method="POST">
+            <div class="form-group">
+                <label>👤 نام کاربری دلخواه</label>
+                <input type="text" name="username" placeholder="نام کاربری خود را انتخاب کنید" required autofocus>
+            </div>
+            <div class="form-group">
+                <label>🔑 رمز عبور</label>
+                <input type="password" name="password" placeholder="رمز عبور خود را انتخاب کنید" required>
+            </div>
+            <div class="form-group">
+                <label>📊 نوع اکانت</label>
+                <select name="account_type">
+                    <option value="noob">🟢 Noob (رایگان)</option>
+                    <option value="rich">🟡 Rich (ویژه)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>🔑 کد معرف (اختیاری)</label>
+                <input type="text" name="referral_code" placeholder="اگر کد معرف دارید وارد کنید">
+            </div>
+            <button type="submit" class="btn-submit">🚀 ارسال درخواست</button>
+        </form>
+
+        <div class="login-link">
+            قبلاً حساب دارید؟ <a href="{{ url_for('main.login') }}">وارد شوید</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js">
+    </script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 120, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#00ffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.3, "random": true },
+                "size": { "value": 2, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#00ffff", "opacity": 0.1,
+                    "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false,
+                    "out_mode": "out" }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "repulse" },
+                    "onclick": { "enable": true, "mode": "push" }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>
