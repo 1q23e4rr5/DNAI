@@ -34,10 +34,21 @@ def create_default_admin():
         print("👑 ادمین: admin / admin123")
         print("=" * 50)
 
+# ایجاد ادمین در زمان راه‌اندازی
 create_default_admin()
 
+# ایجاد نمونه برنامه
 app = create_app()
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    socketio.run(app, debug=True, host='0.0.0.0', port=port)
+    # دریافت پورت از محیط (برای Render)
+    port = int(os.environ.get('PORT', 10000))
+    
+    # اجرا با SocketIO
+    socketio.run(
+        app, 
+        debug=False,  # در تولید False باشد
+        host='0.0.0.0', 
+        port=port,
+        allow_unsafe_werkzeug=True  # برای رفع خطای Werkzeug
+    )
